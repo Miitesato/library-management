@@ -1,0 +1,4 @@
+CREATE TABLE readertype (typeno INT PRIMARY KEY, typename VARCHAR(20), max_quantity INT CHECK(max_quantity BETWEEN 0 AND 30), max_days INT);
+CREATE TABLE reader (rid VARCHAR(20) PRIMARY KEY, rname VARCHAR(20), sex VARCHAR(2), typeno INT DEFAULT 1, dept VARCHAR(40), tel VARCHAR(20), FOREIGN KEY(typeno) REFERENCES readertype(typeno) ON UPDATE CASCADE, CHECK(sex IS NULL OR (CHAR_LENGTH(sex)=1 AND LOCATE(sex,'男女')>0)));
+CREATE TABLE book (bid VARCHAR(20) PRIMARY KEY, bname VARCHAR(50), author VARCHAR(30), publisher VARCHAR(30), publishdate DATE, price DECIMAL(10,2) CHECK(price>0), total INT CHECK(total>=0), position VARCHAR(20));
+CREATE TABLE borrow (id INT AUTO_INCREMENT PRIMARY KEY, rid VARCHAR(20), bid VARCHAR(20), borrowtime DATE, returntime DATE, FOREIGN KEY(rid) REFERENCES reader(rid) ON DELETE RESTRICT ON UPDATE RESTRICT, FOREIGN KEY(bid) REFERENCES book(bid) ON DELETE CASCADE);
